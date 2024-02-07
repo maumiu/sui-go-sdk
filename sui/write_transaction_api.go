@@ -62,18 +62,21 @@ func (s *suiWriteTransactionImpl) SuiExecuteTransactionBlock(ctx context.Context
 // MoveCall implements the method `unsafe_moveCall`, creates an unsigned transaction to execute a Move call on the network, by calling the specified function in the module of a given package.
 func (s *suiWriteTransactionImpl) MoveCall(ctx context.Context, req models.MoveCallRequest) (models.TxnMetaData, error) {
 	var rsp models.TxnMetaData
+	params := []interface{}{
+		req.Signer,
+		req.PackageObjectId,
+		req.Module,
+		req.Function,
+		req.TypeArguments,
+		req.Arguments,
+	}
+	if req.Gas != "" {
+		params = append(params, req.Gas)
+	}
+	params = append(params, req.GasBudget)
 	respBytes, err := s.conn.Request(ctx, httpconn.Operation{
 		Method: "unsafe_moveCall",
-		Params: []interface{}{
-			req.Signer,
-			req.PackageObjectId,
-			req.Module,
-			req.Function,
-			req.TypeArguments,
-			req.Arguments,
-			req.Gas,
-			req.GasBudget,
-		},
+		Params: params,
 	})
 	if err != nil {
 		return rsp, err
