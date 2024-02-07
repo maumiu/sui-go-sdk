@@ -26,7 +26,7 @@ type MoveCallRequest struct {
 	// the arguments to the function
 	Arguments []interface{} `json:"arguments"`
 	// gas object to be used in this transaction, node will pick one from the signer's possession if not provided
-	Gas string `json:"gas"`
+	Gas string `json:"gas,omitempty"`
 	// the gas budget, the transaction will fail if the gas cost exceed the budget
 	GasBudget string `json:"gasBudget"`
 
@@ -188,8 +188,8 @@ type BatchTransactionResponse struct {
 }
 
 type RPCTransactionRequestParams struct {
-	MoveCallRequestParams       *MoveCallRequest       `json:"moveCallRequestParams,omitempty"`
-	TransferObjectRequestParams *TransferObjectRequest `json:"transferObjectRequestParams,omitempty"`
+	MoveCallRequestParams       *MoveCallRequest       `json:"moveCallRequestParams,"`
+	TransferObjectRequestParams *TransferObjectRequest `json:"transferObjectRequestParams,"`
 }
 
 type SuiExecuteTransactionBlockRequest struct {
